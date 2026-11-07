@@ -1,0 +1,17 @@
+{
+ "files": {
+  "packing_video.mp4": {
+   "captured_at": "2026-10-23T13:00:00+07:00",
+   "attestations": [
+    "PACK_VIDEO_COMPLETENESS"
+   ]
+  },
+  "return_receipt_video.mp4": {
+   "captured_at": "2026-10-23T14:55:00+07:00",
+   "attestations": [
+    "RETURN_RECEIPT_VIDEO"
+   ]
+  }
+ },
+ "declared_unavailable": []
+}

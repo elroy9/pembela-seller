@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h2>Hasil sengketa {{ d.dispute_id }}</h2>
+  <table>
+    <tr><th>Status</th><td {{ tid('result-status') }}>{{ d.status }}</td></tr>
+    <tr><th>Keterangan</th><td {{ tid('result-text') }}>
+      {% if d.status == 'APPEAL_FILED' %}Banding diterima, sedang ditinjau.
+      {% elif d.status == 'RESOLVED_WON' %}Banding diterima: keputusan berpihak ke penjual (SIMULASI).
+      {% elif d.status == 'RESOLVED_LOST' %}Banding ditolak (SIMULASI).
+      {% elif d.status == 'EXPIRED' %}Batas waktu banding terlewat.
+      {% else %}Belum ada banding.{% endif %}</td></tr>
+    {% if d.appeal %}
+    <tr><th>Nomor pengajuan</th><td {{ tid('filing-ref') }}>{{ d.appeal.submission_ref }}</td></tr>
+    <tr><th>Waktu pengajuan</th><td {{ tid('filed-at') }}>{{ d.appeal.filed_at }}</td></tr>
+    <tr><th>Uraian banding</th><td><pre {{ tid('appeal-text') }} style="white-space:pre-wrap;margin:0;font:inherit">{{ d.appeal.text }}</pre></td></tr>
+    <tr><th>Berkas</th><td>{% for f in d.appeal.files %}{{ f.name }} ({{ f.sha256[:12] }}…){% if not loop.last %}, {% endif %}{% endfor %}</td></tr>
+    {% endif %}
+  </table>
+  {% if d.status in ('RESOLVED_WON','RESOLVED_LOST') %}<p class="muted" style="font-size:13px">Catatan demo: hasil ini ditentukan skenario simulasi, <b>tidak berkaitan dengan isi bukti</b> yang diunggah. Bukan penilaian atau prediksi.</p>{% endif %}
+  <p><a class="btn" href="/orders" {{ tid('back-to-orders') }}>Kembali</a></p>
+</div>
+{% endblock %}

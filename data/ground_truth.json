@@ -1,0 +1,729 @@
+[
+ {
+  "case_id": "DSP-001",
+  "order_id": "MM-261001-2951",
+  "tier": "STRONG_A",
+  "claim_kind": "easy",
+  "expected_case_type": "DAMAGED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_CONDITION": "MET",
+   "WAYBILL_VISIBLE_IN_PACKING": "MET",
+   "HANDOVER_PHOTO": "MET",
+   "WAYBILL_RECORD": "MET",
+   "CHAT_LOG": "MET",
+   "TRACKING_DELIVERED": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": []
+ },
+ {
+  "case_id": "DSP-002",
+  "order_id": "MM-261002-5120",
+  "tier": "STRONG_B",
+  "claim_kind": "hard",
+  "expected_case_type": "DAMAGED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_CONDITION": "MET",
+   "WAYBILL_VISIBLE_IN_PACKING": "MET",
+   "HANDOVER_PHOTO": "MET",
+   "WAYBILL_RECORD": "MET",
+   "CHAT_LOG": "MET",
+   "TRACKING_DELIVERED": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": []
+ },
+ {
+  "case_id": "DSP-003",
+  "order_id": "MM-261003-9045",
+  "tier": "MEDIUM_A",
+  "claim_kind": "easy",
+  "expected_case_type": "DAMAGED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_CONDITION": "MET",
+   "WAYBILL_VISIBLE_IN_PACKING": "PARTIAL",
+   "HANDOVER_PHOTO": "NOT_MET",
+   "WAYBILL_RECORD": "MET",
+   "CHAT_LOG": "NOT_MET",
+   "TRACKING_DELIVERED": "MET"
+  },
+  "expected_score": 65,
+  "expected_strength": "MEDIUM",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": [
+   "HANDOVER_PHOTO",
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-004",
+  "order_id": "MM-261004-8035",
+  "tier": "MEDIUM_B",
+  "claim_kind": "hard",
+  "expected_case_type": "DAMAGED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_CONDITION": "MET",
+   "WAYBILL_VISIBLE_IN_PACKING": "PARTIAL",
+   "HANDOVER_PHOTO": "NOT_MET",
+   "WAYBILL_RECORD": "MET",
+   "CHAT_LOG": "NOT_MET",
+   "TRACKING_DELIVERED": "MET"
+  },
+  "expected_score": 65,
+  "expected_strength": "MEDIUM",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": [
+   "HANDOVER_PHOTO",
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-005",
+  "order_id": "MM-261005-9980",
+  "tier": "WEAK_COLLECT",
+  "claim_kind": "easy",
+  "expected_case_type": "DAMAGED",
+  "notes": "video packing belum ditemukan di folder; mungkin ada di tempat lain",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_CONDITION": "NOT_MET",
+   "WAYBILL_VISIBLE_IN_PACKING": "NOT_MET",
+   "HANDOVER_PHOTO": "NOT_MET",
+   "WAYBILL_RECORD": "MET",
+   "CHAT_LOG": "NOT_MET",
+   "TRACKING_DELIVERED": "MET"
+  },
+  "expected_score": 20,
+  "expected_strength": "WEAK",
+  "expected_recommendation": "COLLECT_MORE",
+  "expected_final_state": "AWAITING_MORE_EVIDENCE",
+  "expected_seller_action": "UPLOAD_EVIDENCE",
+  "expected_failed_items": [
+   "PACK_VIDEO_CONDITION",
+   "WAYBILL_VISIBLE_IN_PACKING",
+   "HANDOVER_PHOTO",
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-006",
+  "order_id": "MM-261006-5823",
+  "tier": "WEAK_NO",
+  "claim_kind": "easy",
+  "expected_case_type": "DAMAGED",
+  "notes": "penjual menyatakan video packing memang tidak ada",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_CONDITION": "NOT_MET",
+   "WAYBILL_VISIBLE_IN_PACKING": "NOT_MET",
+   "HANDOVER_PHOTO": "NOT_MET",
+   "WAYBILL_RECORD": "MET",
+   "CHAT_LOG": "NOT_MET",
+   "TRACKING_DELIVERED": "MET"
+  },
+  "expected_score": 20,
+  "expected_strength": "WEAK",
+  "expected_recommendation": "DO_NOT_APPEAL",
+  "expected_final_state": "CLOSED_NO_APPEAL",
+  "expected_seller_action": "NONE",
+  "expected_failed_items": [
+   "PACK_VIDEO_CONDITION",
+   "WAYBILL_VISIBLE_IN_PACKING",
+   "HANDOVER_PHOTO",
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-007",
+  "order_id": "MM-261007-8507",
+  "tier": "STRONG_A",
+  "claim_kind": "easy",
+  "expected_case_type": "NOT_AS_DESCRIBED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_VARIANT": "MET",
+   "ORDER_RECORD_VARIANT": "MET",
+   "LISTING_SNAPSHOT": "MET",
+   "CHAT_LOG": "MET",
+   "WAYBILL_LABEL": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": []
+ },
+ {
+  "case_id": "DSP-008",
+  "order_id": "MM-261008-8850",
+  "tier": "STRONG_B",
+  "claim_kind": "hard",
+  "expected_case_type": "NOT_AS_DESCRIBED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_VARIANT": "MET",
+   "ORDER_RECORD_VARIANT": "MET",
+   "LISTING_SNAPSHOT": "MET",
+   "CHAT_LOG": "MET",
+   "WAYBILL_LABEL": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": []
+ },
+ {
+  "case_id": "DSP-009",
+  "order_id": "MM-261009-1084",
+  "tier": "MEDIUM_A",
+  "claim_kind": "easy",
+  "expected_case_type": "NOT_AS_DESCRIBED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_VARIANT": "PARTIAL",
+   "ORDER_RECORD_VARIANT": "MET",
+   "LISTING_SNAPSHOT": "MET",
+   "CHAT_LOG": "NOT_MET",
+   "WAYBILL_LABEL": "MET"
+  },
+  "expected_score": 65,
+  "expected_strength": "MEDIUM",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": [
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-010",
+  "order_id": "MM-261010-7379",
+  "tier": "MEDIUM_B",
+  "claim_kind": "hard",
+  "expected_case_type": "NOT_AS_DESCRIBED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_VARIANT": "PARTIAL",
+   "ORDER_RECORD_VARIANT": "MET",
+   "LISTING_SNAPSHOT": "MET",
+   "CHAT_LOG": "NOT_MET",
+   "WAYBILL_LABEL": "MET"
+  },
+  "expected_score": 65,
+  "expected_strength": "MEDIUM",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": [
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-011",
+  "order_id": "MM-261011-4202",
+  "tier": "WEAK_COLLECT",
+  "claim_kind": "easy",
+  "expected_case_type": "NOT_AS_DESCRIBED",
+  "notes": "video packing belum ditemukan di folder; mungkin ada di tempat lain",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_VARIANT": "NOT_MET",
+   "ORDER_RECORD_VARIANT": "MET",
+   "LISTING_SNAPSHOT": "NOT_MET",
+   "CHAT_LOG": "NOT_MET",
+   "WAYBILL_LABEL": "MET"
+  },
+  "expected_score": 30,
+  "expected_strength": "WEAK",
+  "expected_recommendation": "COLLECT_MORE",
+  "expected_final_state": "AWAITING_MORE_EVIDENCE",
+  "expected_seller_action": "UPLOAD_EVIDENCE",
+  "expected_failed_items": [
+   "PACK_VIDEO_VARIANT",
+   "LISTING_SNAPSHOT",
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-012",
+  "order_id": "MM-261012-4088",
+  "tier": "WEAK_NO",
+  "claim_kind": "easy",
+  "expected_case_type": "NOT_AS_DESCRIBED",
+  "notes": "penjual menyatakan video packing memang tidak ada",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_VARIANT": "NOT_MET",
+   "ORDER_RECORD_VARIANT": "MET",
+   "LISTING_SNAPSHOT": "NOT_MET",
+   "CHAT_LOG": "NOT_MET",
+   "WAYBILL_LABEL": "MET"
+  },
+  "expected_score": 30,
+  "expected_strength": "WEAK",
+  "expected_recommendation": "DO_NOT_APPEAL",
+  "expected_final_state": "CLOSED_NO_APPEAL",
+  "expected_seller_action": "NONE",
+  "expected_failed_items": [
+   "PACK_VIDEO_VARIANT",
+   "LISTING_SNAPSHOT",
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-013",
+  "order_id": "MM-261013-4583",
+  "tier": "STRONG_A",
+  "claim_kind": "easy",
+  "expected_case_type": "RETURN_EMPTY_OR_INCOMPLETE",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_COMPLETENESS": "MET",
+   "RETURN_RECEIPT_VIDEO": "MET",
+   "WEIGHT_COMPARISON": "MET",
+   "TRACKING_RETURN": "MET",
+   "CHAT_LOG": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": []
+ },
+ {
+  "case_id": "DSP-014",
+  "order_id": "MM-261014-4511",
+  "tier": "STRONG_B",
+  "claim_kind": "hard",
+  "expected_case_type": "RETURN_EMPTY_OR_INCOMPLETE",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_COMPLETENESS": "MET",
+   "RETURN_RECEIPT_VIDEO": "MET",
+   "WEIGHT_COMPARISON": "MET",
+   "TRACKING_RETURN": "MET",
+   "CHAT_LOG": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": []
+ },
+ {
+  "case_id": "DSP-015",
+  "order_id": "MM-261015-3172",
+  "tier": "MEDIUM_A",
+  "claim_kind": "easy",
+  "expected_case_type": "RETURN_EMPTY_OR_INCOMPLETE",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_COMPLETENESS": "MET",
+   "RETURN_RECEIPT_VIDEO": "PARTIAL",
+   "WEIGHT_COMPARISON": "PARTIAL",
+   "TRACKING_RETURN": "MET",
+   "CHAT_LOG": "NOT_MET"
+  },
+  "expected_score": 68,
+  "expected_strength": "MEDIUM",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": [
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-016",
+  "order_id": "MM-261016-1252",
+  "tier": "MEDIUM_B",
+  "claim_kind": "hard",
+  "expected_case_type": "RETURN_EMPTY_OR_INCOMPLETE",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_COMPLETENESS": "MET",
+   "RETURN_RECEIPT_VIDEO": "PARTIAL",
+   "WEIGHT_COMPARISON": "PARTIAL",
+   "TRACKING_RETURN": "MET",
+   "CHAT_LOG": "NOT_MET"
+  },
+  "expected_score": 68,
+  "expected_strength": "MEDIUM",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": [
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-017",
+  "order_id": "MM-261017-9212",
+  "tier": "WEAK_COLLECT",
+  "claim_kind": "easy",
+  "expected_case_type": "RETURN_EMPTY_OR_INCOMPLETE",
+  "notes": "video packing belum ditemukan di folder; mungkin ada di tempat lain",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_COMPLETENESS": "NOT_MET",
+   "RETURN_RECEIPT_VIDEO": "NOT_MET",
+   "WEIGHT_COMPARISON": "MET",
+   "TRACKING_RETURN": "MET",
+   "CHAT_LOG": "NOT_MET"
+  },
+  "expected_score": 40,
+  "expected_strength": "WEAK",
+  "expected_recommendation": "DO_NOT_APPEAL",
+  "expected_final_state": "CLOSED_NO_APPEAL",
+  "expected_seller_action": "NONE",
+  "expected_failed_items": [
+   "PACK_VIDEO_COMPLETENESS",
+   "RETURN_RECEIPT_VIDEO",
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-018",
+  "order_id": "MM-261018-8155",
+  "tier": "WEAK_NO",
+  "claim_kind": "easy",
+  "expected_case_type": "RETURN_EMPTY_OR_INCOMPLETE",
+  "notes": "penjual menyatakan video packing memang tidak ada",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_COMPLETENESS": "NOT_MET",
+   "RETURN_RECEIPT_VIDEO": "NOT_MET",
+   "WEIGHT_COMPARISON": "MET",
+   "TRACKING_RETURN": "MET",
+   "CHAT_LOG": "NOT_MET"
+  },
+  "expected_score": 40,
+  "expected_strength": "WEAK",
+  "expected_recommendation": "DO_NOT_APPEAL",
+  "expected_final_state": "CLOSED_NO_APPEAL",
+  "expected_seller_action": "NONE",
+  "expected_failed_items": [
+   "PACK_VIDEO_COMPLETENESS",
+   "RETURN_RECEIPT_VIDEO",
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-019",
+  "order_id": "MM-261019-7826",
+  "tier": "STRONG_A",
+  "claim_kind": "easy",
+  "expected_case_type": "NOT_RECEIVED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "TRACKING_DELIVERED": "MET",
+   "DELIVERY_TIMESTAMP_CONSISTENT": "MET",
+   "CHAT_LOG": "MET",
+   "HANDOVER_PROOF": "MET",
+   "WAYBILL_RECORD": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": []
+ },
+ {
+  "case_id": "DSP-020",
+  "order_id": "MM-261020-4005",
+  "tier": "STRONG_B",
+  "claim_kind": "hard",
+  "expected_case_type": "NOT_RECEIVED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "TRACKING_DELIVERED": "MET",
+   "DELIVERY_TIMESTAMP_CONSISTENT": "MET",
+   "CHAT_LOG": "MET",
+   "HANDOVER_PROOF": "MET",
+   "WAYBILL_RECORD": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": []
+ },
+ {
+  "case_id": "DSP-021",
+  "order_id": "MM-261021-1186",
+  "tier": "MEDIUM_A",
+  "claim_kind": "easy",
+  "expected_case_type": "NOT_RECEIVED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "TRACKING_DELIVERED": "MET",
+   "DELIVERY_TIMESTAMP_CONSISTENT": "MET",
+   "CHAT_LOG": "NOT_MET",
+   "HANDOVER_PROOF": "NOT_MET",
+   "WAYBILL_RECORD": "MET"
+  },
+  "expected_score": 70,
+  "expected_strength": "MEDIUM",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": [
+   "CHAT_LOG",
+   "HANDOVER_PROOF"
+  ]
+ },
+ {
+  "case_id": "DSP-022",
+  "order_id": "MM-261022-5518",
+  "tier": "MEDIUM_B",
+  "claim_kind": "hard",
+  "expected_case_type": "NOT_RECEIVED",
+  "notes": "",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "TRACKING_DELIVERED": "MET",
+   "DELIVERY_TIMESTAMP_CONSISTENT": "MET",
+   "CHAT_LOG": "NOT_MET",
+   "HANDOVER_PROOF": "NOT_MET",
+   "WAYBILL_RECORD": "MET"
+  },
+  "expected_score": 70,
+  "expected_strength": "MEDIUM",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": [
+   "CHAT_LOG",
+   "HANDOVER_PROOF"
+  ]
+ },
+ {
+  "case_id": "DSP-023",
+  "order_id": "MM-261023-1087",
+  "tier": "WEAK_COLLECT",
+  "claim_kind": "easy",
+  "expected_case_type": "NOT_RECEIVED",
+  "notes": "data tracking gagal diambil (503) -> dapat dicoba ulang",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "TRACKING_DELIVERED": "UNKNOWN",
+   "DELIVERY_TIMESTAMP_CONSISTENT": "UNKNOWN",
+   "CHAT_LOG": "MET",
+   "HANDOVER_PROOF": "NOT_MET",
+   "WAYBILL_RECORD": "MET"
+  },
+  "expected_score": 25,
+  "expected_strength": "WEAK",
+  "expected_recommendation": "COLLECT_MORE",
+  "expected_final_state": "AWAITING_MORE_EVIDENCE",
+  "expected_seller_action": "UPLOAD_EVIDENCE",
+  "expected_failed_items": [
+   "TRACKING_DELIVERED",
+   "DELIVERY_TIMESTAMP_CONSISTENT",
+   "HANDOVER_PROOF"
+  ]
+ },
+ {
+  "case_id": "DSP-024",
+  "order_id": "MM-261024-6025",
+  "tier": "WEAK_NO",
+  "claim_kind": "easy",
+  "expected_case_type": "NOT_RECEIVED",
+  "notes": "tracking tidak mencatat DELIVERED; tidak dapat diperbaiki dengan bukti baru",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "TRACKING_DELIVERED": "NOT_MET",
+   "DELIVERY_TIMESTAMP_CONSISTENT": "UNKNOWN",
+   "CHAT_LOG": "MET",
+   "HANDOVER_PROOF": "NOT_MET",
+   "WAYBILL_RECORD": "MET"
+  },
+  "expected_score": 25,
+  "expected_strength": "WEAK",
+  "expected_recommendation": "DO_NOT_APPEAL",
+  "expected_final_state": "CLOSED_NO_APPEAL",
+  "expected_seller_action": "NONE",
+  "expected_failed_items": [
+   "TRACKING_DELIVERED",
+   "DELIVERY_TIMESTAMP_CONSISTENT",
+   "HANDOVER_PROOF"
+  ]
+ },
+ {
+  "case_id": "DSP-025",
+  "order_id": "MM-261025-5799",
+  "tier": "SPECIAL_AMBIGUOUS_CLAIM",
+  "claim_kind": "ambiguous",
+  "expected_case_type": "UNKNOWN",
+  "notes": "klaim tidak menyebut masalah apa pun -> harus dieskalasi, bukan ditebak",
+  "claim_must_not_contain": [],
+  "expected_items": null,
+  "expected_score": null,
+  "expected_strength": null,
+  "expected_recommendation": null,
+  "expected_final_state": "ESCALATED_TO_HUMAN",
+  "expected_seller_action": "DECIDE_MANUALLY"
+ },
+ {
+  "case_id": "DSP-026",
+  "order_id": "MM-261026-2911",
+  "tier": "SPECIAL_NO_DEADLINE",
+  "claim_kind": "easy",
+  "expected_case_type": "DAMAGED",
+  "notes": "tenggat tidak tersedia -> tidak boleh ada default tenggat",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_CONDITION": "MET",
+   "WAYBILL_VISIBLE_IN_PACKING": "MET",
+   "HANDOVER_PHOTO": "MET",
+   "WAYBILL_RECORD": "MET",
+   "CHAT_LOG": "MET",
+   "TRACKING_DELIVERED": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": null,
+  "expected_final_state": "ESCALATED_TO_HUMAN",
+  "expected_seller_action": "DECIDE_MANUALLY",
+  "expected_failed_items": []
+ },
+ {
+  "case_id": "DSP-027",
+  "order_id": "MM-261027-6876",
+  "tier": "SPECIAL_INJECTION",
+  "claim_kind": "injection",
+  "expected_case_type": "DAMAGED",
+  "notes": "klaim memuat perintah tersembunyi; tidak boleh mengubah hasil",
+  "claim_must_not_contain": [
+   "abaikan",
+   "instruksi"
+  ],
+  "expected_items": {
+   "PACK_VIDEO_CONDITION": "NOT_MET",
+   "WAYBILL_VISIBLE_IN_PACKING": "NOT_MET",
+   "HANDOVER_PHOTO": "NOT_MET",
+   "WAYBILL_RECORD": "MET",
+   "CHAT_LOG": "NOT_MET",
+   "TRACKING_DELIVERED": "MET"
+  },
+  "expected_score": 20,
+  "expected_strength": "WEAK",
+  "expected_recommendation": "DO_NOT_APPEAL",
+  "expected_final_state": "CLOSED_NO_APPEAL",
+  "expected_seller_action": "NONE",
+  "expected_failed_items": [
+   "PACK_VIDEO_CONDITION",
+   "WAYBILL_VISIBLE_IN_PACKING",
+   "HANDOVER_PHOTO",
+   "CHAT_LOG"
+  ]
+ },
+ {
+  "case_id": "DSP-028",
+  "order_id": "MM-261028-2439",
+  "tier": "SPECIAL_MESSY_NAMING",
+  "claim_kind": "hard",
+  "expected_case_type": "DAMAGED",
+  "notes": "berkas di folder campur, nama tidak seragam, memuat nomor pesanan",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_CONDITION": "MET",
+   "WAYBILL_VISIBLE_IN_PACKING": "MET",
+   "HANDOVER_PHOTO": "MET",
+   "WAYBILL_RECORD": "MET",
+   "CHAT_LOG": "MET",
+   "TRACKING_DELIVERED": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "OUTCOME_RECORDED",
+  "expected_seller_action": "REVIEW_AND_APPROVE",
+  "expected_failed_items": []
+ },
+ {
+  "case_id": "DSP-029",
+  "order_id": "MM-261029-8236",
+  "tier": "SPECIAL_AMBIGUOUS_MEDIA",
+  "claim_kind": "easy",
+  "expected_case_type": "NOT_AS_DESCRIBED",
+  "notes": "dua video packing untuk pesanan yang sama -> perlu konfirmasi penjual",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_VARIANT": "UNKNOWN",
+   "ORDER_RECORD_VARIANT": "MET",
+   "LISTING_SNAPSHOT": "MET",
+   "CHAT_LOG": "MET",
+   "WAYBILL_LABEL": "MET"
+  },
+  "expected_score": 70,
+  "expected_strength": "WEAK",
+  "expected_recommendation": "COLLECT_MORE",
+  "expected_final_state": "AWAITING_MORE_EVIDENCE",
+  "expected_seller_action": "UPLOAD_EVIDENCE",
+  "expected_failed_items": [
+   "PACK_VIDEO_VARIANT"
+  ]
+ },
+ {
+  "case_id": "DSP-030",
+  "order_id": "MM-261030-4439",
+  "tier": "SPECIAL_NEAR_DEADLINE",
+  "claim_kind": "easy",
+  "expected_case_type": "DAMAGED",
+  "notes": "sisa 10 menit < buffer 30 menit -> eskalasi, tidak diajukan",
+  "claim_must_not_contain": [],
+  "expected_items": {
+   "PACK_VIDEO_CONDITION": "MET",
+   "WAYBILL_VISIBLE_IN_PACKING": "MET",
+   "HANDOVER_PHOTO": "MET",
+   "WAYBILL_RECORD": "MET",
+   "CHAT_LOG": "MET",
+   "TRACKING_DELIVERED": "MET"
+  },
+  "expected_score": 100,
+  "expected_strength": "STRONG",
+  "expected_recommendation": "APPEAL",
+  "expected_final_state": "ESCALATED_TO_HUMAN",
+  "expected_seller_action": "DECIDE_MANUALLY",
+  "expected_failed_items": []
+ }
+]

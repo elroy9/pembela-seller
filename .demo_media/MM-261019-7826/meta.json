@@ -1,0 +1,13 @@
+{
+ "files": {
+  "packing_video.mp4": {
+   "captured_at": "2026-10-25T01:00:00+07:00",
+   "attestations": []
+  },
+  "handover_photo.jpg": {
+   "captured_at": "2026-10-25T02:55:00+07:00",
+   "attestations": []
+  }
+ },
+ "declared_unavailable": []
+}

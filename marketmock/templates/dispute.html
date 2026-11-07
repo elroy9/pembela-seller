@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h2>Sengketa <span {{ tid('dispute-id') }}>{{ d.dispute_id }}</span></h2>
+  <table>
+    <tr><th>Pesanan</th><td {{ tid('order-id') }}>{{ d.order_id }}</td></tr>
+    <tr><th>Nilai pesanan (Rp)</th><td {{ tid('order-value') }}>{{ d.order_value_idr }}</td></tr>
+    <tr><th>Klaim pembeli</th><td {{ tid('buyer-claim') }}>{{ d.buyer_claim_text }}</td></tr>
+    <tr><th>Batas banding</th><td {{ tid('deadline-at') }}>{{ d.deadline_at or '-' }}</td></tr>
+    <tr><th>Sisa waktu</th><td {{ tid('countdown') }} data-deadline="{{ d.deadline_at or '' }}" id="cd">-</td></tr>
+    <tr><th>Status</th><td {{ tid('dispute-status') }}>{{ d.status }}</td></tr>
+  </table>
+  {% if d.status == 'OPEN' %}
+    <p><a class="btn" href="/disputes/{{ d.dispute_id }}/appeal" {{ tid('btn-start-appeal') }}>Ajukan banding</a></p>
+  {% else %}
+    <p><a class="btn" href="/disputes/{{ d.dispute_id }}/result" {{ tid('btn-view-result') }}>Lihat hasil</a></p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>Resi &amp; berat paket</h3>
+  <table>
+    <tr><th>No. resi</th><td {{ tid('waybill-no') }}>{{ d.waybill.tracking_no }}</td></tr>
+    <tr><th>Berat kirim (kg)</th><td {{ tid('ship-weight') }}>{{ d.waybill.shipped_weight_kg }}</td></tr>
+    <tr><th>Berat retur (kg)</th><td {{ tid('return-weight') }}>{{ d.waybill.return_weight_kg if d.waybill.return_weight_kg is not none else '-' }}</td></tr>
+  </table>
+  <h3>Tracking</h3>
+  <table {{ tid('tracking-table') }}>
+    {% for t in d.tracking %}<tr><td>{{ t.ts }}</td><td>{{ t.status }}</td><td>{{ t.note }}</td></tr>{% endfor %}
+  </table>
+</div>
+
+<div class="card">
+  <h3>Listing saat dibeli</h3>
+  <table>
+    <tr><th>Produk</th><td>{{ d.listing.title }}</td></tr>
+    <tr><th>Varian dipesan</th><td {{ tid('listing-variant') }}>{{ d.listing.variant_ordered }}</td></tr>
+    <tr><th>Harga (Rp)</th><td {{ tid('listing-price') }}>{{ d.listing.price_idr }}</td></tr>
+  </table>
+  <h3>Riwayat chat</h3>
+  <table {{ tid('chat-log') }}>
+    {% for c in d.chat %}<tr><td>{{ c.ts }}</td><td>{{ c['from'] }}</td><td>{{ c.text }}</td></tr>{% endfor %}
+  </table>
+</div>
+
+<script>
+(function(){
+  var el = document.getElementById('cd'); if(!el) return;
+  if (!el.getAttribute('data-deadline')) { el.textContent = '-'; return; }
+  var dl = new Date(el.getAttribute('data-deadline'));
+  function tick(){
+    var s = Math.floor((dl - new Date())/1000);
+    if (s <= 0) { el.textContent = 'Lewat batas'; return; }
+    var h = Math.floor(s/3600), m = Math.floor((s%3600)/60), x = s%60;
+    el.textContent = h + 'j ' + m + 'm ' + x + 'd';
+  }
+  tick(); setInterval(tick, 1000);
+})();
+</script>
+{% endblock %}

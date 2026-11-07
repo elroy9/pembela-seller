@@ -1,0 +1,172 @@
+{
+  "agent1_input": {
+    "type": "object",
+    "required": ["case_id", "platform", "order_id", "order_value_idr", "buyer_claim_text", "deadline_at", "context"],
+    "properties": {
+      "case_id": {"type": "string"},
+      "platform": {"type": "string"},
+      "order_id": {"type": ["string", "null"]},
+      "order_value_idr": {"type": ["integer", "null"]},
+      "buyer_claim_text": {"type": "string"},
+      "deadline_at": {"type": ["string", "null"]},
+      "context": {
+        "type": "object",
+        "required": ["product", "has_return_flow", "tracking_has_delivered_event"],
+        "properties": {
+          "product": {"type": ["string", "null"]},
+          "has_return_flow": {"type": "boolean"},
+          "tracking_has_delivered_event": {"type": "boolean"}
+        }
+      }
+    }
+  },
+  "agent1_output": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["case_id", "case_type", "confidence", "extracted", "missing_fields", "route", "rationale"],
+    "properties": {
+      "case_id": {"type": "string"},
+      "case_type": {"enum": ["DAMAGED", "NOT_AS_DESCRIBED", "RETURN_EMPTY_OR_INCOMPLETE", "NOT_RECEIVED", "UNKNOWN"]},
+      "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+      "extracted": {
+        "type": "object",
+        "required": ["order_id", "order_value_idr", "deadline_at", "claim_summary"],
+        "properties": {
+          "order_id": {"type": ["string", "null"]},
+          "order_value_idr": {"type": ["integer", "null"]},
+          "deadline_at": {"type": ["string", "null"]},
+          "claim_summary": {"type": "string"}
+        }
+      },
+      "missing_fields": {"type": "array", "items": {"type": "string"}},
+      "route": {"enum": ["CONTINUE", "ESCALATE"]},
+      "rationale": {"type": "string", "maxLength": 240}
+    }
+  },
+  "agent2_input": {
+    "type": "object",
+    "required": ["case_id", "case_type", "claim_summary", "minutes_left", "evidence", "checklist"],
+    "properties": {
+      "case_id": {"type": "string"},
+      "case_type": {"type": "string"},
+      "claim_summary": {"type": "string"},
+      "minutes_left": {"type": "integer"},
+      "evidence": {"type": "array"},
+      "checklist": {"type": "array"}
+    }
+  },
+  "agent2_output": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["case_id", "items", "consistency_flags", "missing_evidence", "strength_proposal", "recommendation_proposal", "summary"],
+    "properties": {
+      "case_id": {"type": "string"},
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["item_id", "status", "evidence_ids", "note"],
+          "properties": {
+            "item_id": {"type": "string"},
+            "status": {"enum": ["MET", "PARTIAL", "NOT_MET", "UNKNOWN"]},
+            "evidence_ids": {"type": "array", "items": {"type": "string"}},
+            "note": {"type": "string", "maxLength": 200}
+          }
+        }
+      },
+      "consistency_flags": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["code", "severity", "evidence_ids", "note"],
+          "properties": {
+            "code": {"enum": ["PACKING_VIDEO_AFTER_SHIPMENT", "WAYBILL_MISMATCH", "VARIANT_MISMATCH", "DUPLICATE_FILE_HASH", "EVIDENCE_FOR_OTHER_ORDER", "OTHER"]},
+            "severity": {"enum": ["HIGH", "MEDIUM"]},
+            "evidence_ids": {"type": "array", "items": {"type": "string"}},
+            "note": {"type": "string"}
+          }
+        }
+      },
+      "missing_evidence": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["item_id", "suggestion"],
+          "properties": {"item_id": {"type": "string"}, "suggestion": {"type": "string"}}
+        }
+      },
+      "strength_proposal": {"enum": ["STRONG", "MEDIUM", "WEAK"]},
+      "recommendation_proposal": {"enum": ["APPEAL", "COLLECT_MORE", "DO_NOT_APPEAL"]},
+      "summary": {"type": "string", "maxLength": 300}
+    }
+  },
+  "agent3_input": {
+    "type": "object",
+    "required": ["case_id", "case_type", "order", "buyer_claim_summary", "evidence", "review", "requested_outcome_options"],
+    "properties": {
+      "case_id": {"type": "string"},
+      "case_type": {"type": "string"},
+      "order": {"type": "object"},
+      "buyer_claim_summary": {"type": "string"},
+      "evidence": {"type": "array"},
+      "review": {"type": "object"},
+      "requested_outcome_options": {"type": "array"}
+    }
+  },
+  "agent3_output": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["case_id", "status", "refusal_reason", "appeal"],
+    "properties": {
+      "case_id": {"type": "string"},
+      "status": {"enum": ["DRAFTED", "REFUSED"]},
+      "refusal_reason": {"type": ["string", "null"]},
+      "appeal": {
+        "type": ["object", "null"],
+        "required": ["summary", "timeline", "evidence_list", "requests"],
+        "properties": {
+          "summary": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["kind", "text", "evidence_ids"],
+              "properties": {
+                "kind": {"enum": ["claim"]},
+                "text": {"type": "string"},
+                "evidence_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+              }
+            }
+          },
+          "timeline": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["ts", "event", "evidence_ids"],
+              "properties": {
+                "ts": {"type": "string"},
+                "event": {"type": "string"},
+                "evidence_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+              }
+            }
+          },
+          "evidence_list": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["evidence_id", "label"],
+              "properties": {"evidence_id": {"type": "string"}, "label": {"type": "string"}}
+            }
+          },
+          "requests": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["kind", "text"],
+              "properties": {"kind": {"enum": ["request"]}, "text": {"type": "string"}}
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+ "files": {
+  "packing_video.mp4": {
+   "captured_at": "2026-10-22T01:00:00+07:00",
+   "attestations": [
+    "PACK_VIDEO_VARIANT"
+   ]
+  },
+  "listing_snapshot.jpg": {
+   "captured_at": "2026-10-22T02:55:00+07:00",
+   "attestations": []
+  }
+ },
+ "declared_unavailable": []
+}

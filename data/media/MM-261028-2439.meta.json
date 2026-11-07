@@ -1,0 +1,16 @@
+{
+ "files": {
+  "VIDEO_PACKING_MM-261028-2439.mp4": {
+   "captured_at": "2026-10-27T07:00:00+07:00",
+   "attestations": [
+    "PACK_VIDEO_CONDITION",
+    "WAYBILL_VISIBLE_IN_PACKING"
+   ]
+  },
+  "serah_terima_MM-261028-2439.jpg": {
+   "captured_at": "2026-10-27T08:55:00+07:00",
+   "attestations": []
+  }
+ },
+ "declared_unavailable": []
+}

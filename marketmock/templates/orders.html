@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h2>Pesanan dengan komplain/retur</h2>
+  <table {{ tid('orders-table') }}>
+    <thead><tr><th>Sengketa</th><th>Pesanan</th><th>Produk</th><th>Nilai (Rp)</th><th>Batas banding</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+    {% for r in rows %}
+      <tr {{ tid('order-row-' ~ r.dispute_id) }}>
+        <td>{{ r.dispute_id }}</td>
+        <td>{{ r.order_id }}</td>
+        <td>{{ r.product }}</td>
+        <td>{{ '{:,}'.format(r.order_value_idr).replace(',', '.') }}</td>
+        <td>{{ r.deadline_at or '-' }}</td>
+        <td {{ tid('order-status-' ~ r.dispute_id) }}><span class="badge">{{ r.status }}</span></td>
+        <td><a class="btn" href="/disputes/{{ r.dispute_id }}" {{ tid('open-dispute-' ~ r.dispute_id) }}>Buka</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="muted" style="font-size:13px;margin-top:12px">Status RESOLVED_WON / RESOLVED_LOST adalah hasil simulasi demo, bukan penilaian atas bukti.</p>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "console_base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block body %}
+<style>
+.head{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.head .sp{flex:1}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:12px;margin:18px 0}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;display:block;color:var(--text)}
+.tile:hover{text-decoration:none;border-color:#b9c4d6}
+.tile.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-weak)}
+.tile .n{font-size:28px;font-weight:700;line-height:1.1}
+.tile .l{color:var(--muted);font-size:13px;margin-top:2px}
+.tile.action .n{color:var(--accent)} .tile.danger .n{color:var(--danger)} .tile.warn .n{color:var(--warn)} .tile.ok .n{color:var(--ok)}
+.alert{background:var(--danger-bg);border:1px solid #f3c9c6;color:#7d1a14;border-radius:8px;padding:10px 14px;margin-bottom:16px}
+.claim{max-width:340px;color:var(--muted)}
+tr.rowlink:hover{background:#fafbfc}
+</style>
+<div class="head">
+  <div><h1>Sengketa yang perlu dibela</h1>
+  <p class="sub" style="margin:0">{{ total }} kasus · nilai pesanan yang masih bisa dibela: <b>{{ value|idr }}</b></p></div>
+  <span class="sp"></span>
+  <form method="post" action="{{ url_for('console.do_process_all') }}"><button class="btn primary">Analisis semua kasus</button></form>
+  <form method="post" action="{{ url_for('console.reset') }}" onsubmit="return confirm('Reset demo? Semua hasil analisis dan banding di mock dihapus.')"><button class="btn">Reset demo</button></form>
+</div>
+
+{% if urgent %}<div class="alert"><b>{{ urgent|length }} kasus tenggatnya di bawah 1 jam:</b>
+  {% for r in urgent %}<a href="{{ url_for('console.case', cid=r.id) }}">{{ r.id }}</a> ({{ r.left }}){% if not loop.last %}, {% endif %}{% endfor %}.
+  Di bawah 30 menit sistem tidak akan mengajukan, dan kasusnya diserahkan ke kamu.</div>{% endif %}
+
+<div class="tiles">
+  <a class="tile {% if not flt %}on{% endif %}" href="{{ url_for('console.dashboard') }}"><div class="n">{{ total }}</div><div class="l">Semua kasus</div></a>
+  {% for k in ['PENDING_APPROVAL','ESCALATED_TO_HUMAN','AWAITING_MORE_EVIDENCE','NOT_PROCESSED','FILED','CLOSED_NO_APPEAL','EXPIRED'] %}
+  <a class="tile {{ STATES[k][1] }} {% if flt==k %}on{% endif %}" href="{{ url_for('console.dashboard', s=k) }}"><div class="n">{{ counts[k] }}</div><div class="l">{{ STATES[k][0] }}</div></a>
+  {% endfor %}
+</div>
+
+<div class="card" style="padding:6px 8px">
+<table>
+  <thead><tr><th>Kasus</th><th>Produk</th><th class="hide-sm">Klaim pembeli</th><th>Nilai</th><th>Sisa waktu</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+  <tr class="rowlink">
+    <td><a href="{{ url_for('console.case', cid=r.id) }}"><b>{{ r.id }}</b></a><div class="muted small mono">{{ r.d.order_id }}</div></td>
+    <td>{{ r.d.product }}<div class="muted small">{{ r.d.courier }}</div></td>
+    <td class="claim small hide-sm">“{{ r.d.buyer_claim_text[:90] }}{% if r.d.buyer_claim_text|length > 90 %}…{% endif %}”
+      {% if r.res and r.res.triage %}<div><span class="badge b-neutral">{{ CASE_TYPE[r.res.triage.case_type] }}</span></div>{% endif %}</td>
+    <td style="white-space:nowrap">{{ r.d.order_value_idr|idr }}</td>
+    <td style="white-space:nowrap" class="{% if r.urgent %}urgent{% endif %}">{{ r.left }}</td>
+    <td><span class="badge b-{{ r.tone }}">{{ r.label }}</span></td>
+    <td style="text-align:right"><a class="btn sm" href="{{ url_for('console.case', cid=r.id) }}" style="display:inline-block">Buka</a></td>
+  </tr>
+  {% else %}<tr><td colspan="7" class="muted" style="padding:24px;text-align:center">Tidak ada kasus di kategori ini.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

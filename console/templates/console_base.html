@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Konsol{% endblock %} · PEMBELA SELLER</title>
+<style>
+:root{
+  --bg:#f5f6f8; --surface:#fff; --line:#e2e5ea; --line-2:#eef0f3;
+  --text:#18212c; --muted:#5d6b7c; --accent:#2457d6; --accent-weak:#e9efff;
+  --ok:#17794a; --ok-bg:#e6f5ed; --warn:#9a5b00; --warn-bg:#fdf1dc;
+  --danger:#b3261e; --danger-bg:#fcebea; --action:#2457d6; --action-bg:#e9efff; --neutral:#4d5a6a; --neutral-bg:#edf0f4;
+  --radius:10px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top .in{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;letter-spacing:.2px;color:var(--text);display:flex;align-items:center;gap:10px}
+.brand i{width:26px;height:26px;border-radius:7px;background:var(--accent);display:inline-block;position:relative}
+.brand i:after{content:"";position:absolute;left:7px;top:6px;width:7px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(40deg)}
+.top .sp{flex:1}
+.pill-demo{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:#fafbfc}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 20px 60px}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:16px;margin:0 0 12px} h3{font-size:14px;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.card + .card{margin-top:16px}
+.btn{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--text);padding:8px 14px;border-radius:8px;cursor:pointer}
+.btn:hover{background:#f3f5f8}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff} .btn.primary:hover{background:#1c47b3}
+.btn.primary[disabled]{opacity:.45;cursor:not-allowed}
+.btn.danger{color:var(--danger);border-color:#e8b9b6;background:#fff} .btn.danger:hover{background:var(--danger-bg)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.b-ok{color:var(--ok);background:var(--ok-bg)} .b-warn{color:var(--warn);background:var(--warn-bg)}
+.b-danger{color:var(--danger);background:var(--danger-bg)} .b-action{color:var(--action);background:var(--action-bg)}
+.b-neutral{color:var(--neutral);background:var(--neutral-bg)}
+table{width:100%;border-collapse:collapse}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);text-align:left;font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.muted{color:var(--muted)} .small{font-size:13px} .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
+.flash{background:var(--accent-weak);border:1px solid #c9d8ff;color:#173a8a;border-radius:8px;padding:10px 14px;margin-bottom:16px}
+.note{background:#fafbfc;border:1px dashed var(--line);border-radius:8px;padding:10px 12px;color:var(--muted);font-size:13px}
+.foot{margin-top:28px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+.urgent{color:var(--danger);font-weight:600}
+@media (max-width:760px){.wrap{padding:16px 14px 50px}.hide-sm{display:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <a class="brand" href="{{ url_for('console.dashboard') }}"><i></i>PEMBELA SELLER</a>
+  <span class="sp"></span>
+  <span class="pill-demo">Demo · MarketMock · data dummy</span>
+  <a class="small hide-sm" href="/orders" target="_blank" rel="noopener">Seller Center tiruan ↗</a>
+</div></header>
+<main class="wrap">
+  {% with m = get_flashed_messages() %}{% for x in m %}<div class="flash">{{ x }}</div>{% endfor %}{% endwith %}
+  {% block body %}{% endblock %}
+  <div class="foot">Mesin penilai: aturan baseline (bukan LLM). Hasil banding tidak dapat dipastikan; hasil di mock adalah <b>ILUSTRASI</b>.
+  Tidak ada banding yang terkirim tanpa persetujuanmu.</div>
+</main>
+</body>
+</html>

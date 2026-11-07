@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h2>Verifikasi 2 Langkah (PALSU)</h2>
+  <p>Masukkan kode verifikasi. Di demo, kode diambil dari Orchestrator Asset, bukan dari SMS/aplikasi asli.</p>
+  {% if error %}<div class="err" {{ tid('twofa-error') }}>{{ error }}</div>{% endif %}
+  <form method="post">
+    <label for="{{ rid('twofa-code') }}">Kode</label>
+    <input type="text" name="code" {{ eid('twofa-code') }} {{ tid('twofa-code') }} autocomplete="off">
+    <button type="submit" {{ tid('twofa-submit') }}>Verifikasi</button>
+  </form>
+</div>
+{% endblock %}

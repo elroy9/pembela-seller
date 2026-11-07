@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h2>Form banding {{ d.dispute_id }}</h2>
+  {% if error %}<div class="err" {{ tid('appeal-error') }}>{{ error }}</div>{% endif %}
+  <form method="post" enctype="multipart/form-data" {{ eid('appeal-form') }}>
+    <div class="form-col{% if rev %} rev{% endif %}">
+      <label for="{{ rid('appeal-reason') }}">Alasan banding</label>
+      <select name="reason" {{ eid('appeal-reason') }} {{ tid('appeal-reason') }}>
+        <option value="goods_ok_before_shipping">Barang dikirim dalam kondisi baik</option>
+        <option value="claim_not_matching_evidence">Klaim pembeli tidak sesuai bukti</option>
+        <option value="return_not_matching">Barang retur tidak sesuai kondisi awal</option>
+        <option value="delivered_per_tracking">Barang tercatat terkirim di tracking</option>
+      </select>
+      <label for="{{ rid('appeal-text') }}">Uraian banding</label>
+      <textarea name="appeal_text" {{ eid('appeal-text') }} {{ tid('appeal-text') }}></textarea>
+      <label for="{{ rid('appeal-files') }}">Unggah bukti (mp4, jpg, png, pdf, txt)</label>
+      <input type="file" name="evidence" multiple {{ eid('appeal-files') }} {{ tid('appeal-files') }}>
+    </div>
+    <button type="submit" {{ tid('appeal-submit') }}>Kirim banding</button>
+  </form>
+</div>
+{% endblock %}

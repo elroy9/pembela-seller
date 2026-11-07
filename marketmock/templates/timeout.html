@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h2>Waktu habis (504)</h2>
+  <p {{ tid('error-timeout') }}>Server tidak merespons tepat waktu. Silakan coba kirim ulang.</p>
+  <p><a class="btn" href="/disputes/{{ did }}/appeal" {{ tid('retry-appeal') }}>Coba lagi</a></p>
+</div>
+{% endblock %}

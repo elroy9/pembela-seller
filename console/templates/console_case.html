@@ -1,0 +1,219 @@
+{% extends "console_base.html" %}
+{% block title %}{{ r.id }}{% endblock %}
+{% block body %}
+{% set res = st.res if st else none %}
+<style>
+.crumb{font-size:13px;margin-bottom:10px}
+.hd{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px}
+.hd .sp{flex:1}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+@media (max-width:980px){.grid{grid-template-columns:1fr}.side{position:static!important}}
+.side{position:sticky;top:76px}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:6px 12px;font-size:14px}
+.kv dt{color:var(--muted)} .kv dd{margin:0}
+.quote{border-left:3px solid var(--line);padding:4px 0 4px 12px;color:#2f3b49;margin:0 0 12px}
+.score{display:flex;align-items:center;gap:16px;margin-bottom:12px;flex-wrap:wrap}
+.score .num{font-size:38px;font-weight:700;line-height:1}
+.bar{position:relative;height:10px;background:var(--neutral-bg);border-radius:99px;flex:1;min-width:160px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px}
+.bar b{position:absolute;top:-3px;bottom:-3px;width:1px;background:#9aa6b5}
+.flag{background:var(--danger-bg);border:1px solid #f3c9c6;color:#7d1a14;border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:14px}
+.draft h3{margin-top:16px}
+.draft ul{margin:0;padding-left:18px} .draft li{margin-bottom:6px}
+.chip{display:inline-block;font-size:11.5px;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--neutral-bg);color:var(--neutral);border-radius:5px;padding:1px 6px;margin-left:4px}
+.tl{list-style:none;padding:0!important;border-left:2px solid var(--line);margin-left:6px!important}
+.tl li{padding-left:14px;position:relative}
+.tl li:before{content:"";position:absolute;left:-6px;top:8px;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--accent)}
+.ck{display:flex;gap:8px;align-items:flex-start;font-size:14px;margin:12px 0}
+textarea{width:100%;font:inherit;border:1px solid var(--line);border-radius:8px;padding:8px;resize:vertical;min-height:64px}
+.hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+.audit{font-size:13px;color:var(--muted)} .audit div{padding:2px 0}
+details summary{cursor:pointer;font-weight:600;font-size:14px}
+</style>
+
+<div class="crumb"><a href="{{ url_for('console.dashboard') }}">← Semua kasus</a></div>
+<div class="hd">
+  <div>
+    <h1>{{ r.id }} · {{ r.d.product }}</h1>
+    <div class="muted">Pesanan <span class="mono">{{ r.d.order_id }}</span> · {{ r.d.order_value_idr|idr }} · {{ r.d.courier }}</div>
+  </div>
+  <span class="sp"></span>
+  <div style="text-align:right">
+    <span class="badge b-{{ r.tone }}" style="font-size:13px">{{ r.label }}</span>
+    <div class="small {% if r.urgent %}urgent{% else %}muted{% endif %}" style="margin-top:4px">Sisa waktu: {{ r.left }}{% if r.d.deadline_at %} · tenggat {{ r.d.deadline_at|fmt_ts }}{% endif %}</div>
+  </div>
+</div>
+
+<div class="grid">
+<div>
+  <div class="card">
+    <h2>Klaim pembeli</h2>
+    <p class="quote">“{{ r.d.buyer_claim_text }}”</p>
+    {% if res and res.triage %}
+    <dl class="kv">
+      <dt>Jenis kasus</dt><dd><b>{{ CASE_TYPE[res.triage.case_type] }}</b> <span class="muted small">· keyakinan {{ (res.triage.confidence*100)|round|int }}%</span></dd>
+      <dt>Ringkasan</dt><dd>{{ res.triage.extracted.claim_summary }}</dd>
+    </dl>
+    {% else %}<div class="note">Belum dianalisis.</div>{% endif %}
+  </div>
+
+  {% if not st %}
+  <div class="card"><h2>Mulai analisis</h2>
+    <p class="muted">Sistem akan membaca klaim, mengumpulkan bukti milikmu, menilai kekuatannya, dan menyiapkan draf bila layak.</p>
+    <form method="post" action="{{ url_for('console.do_process', cid=r.id) }}"><button class="btn primary">Analisis kasus ini</button></form>
+  </div>
+  {% else %}
+
+  {% if res.score %}
+  <div class="card">
+    <h2>Penilaian bukti</h2>
+    <div class="score">
+      <div class="num">{{ res.score.score }}</div>
+      <div class="bar"><i style="width:{{ [res.score.score,100]|min }}%;background:var(--{{ STRENGTH[res.score.strength][1] }})"></i><b style="left:50%"></b><b style="left:75%"></b></div>
+      <div><span class="badge b-{{ STRENGTH[res.score.strength][1] }}">Bukti {{ STRENGTH[res.score.strength][0] }}</span>
+      <div class="small muted" style="margin-top:4px">Saran: <b>{{ RECO[res.score.recommendation] }}</b></div></div>
+    </div>
+    {% if res.score.critical_failed %}<div class="note" style="margin-bottom:12px">Ada item <b>wajib</b> yang belum terpenuhi, jadi kekuatan bukti dibatasi “Lemah” berapa pun skornya.</div>{% endif %}
+    {% for f in res.flags %}<div class="flag"><b>Perlu dicek ({{ f.severity }}):</b> {{ f.note }}</div>{% endfor %}
+    <table>
+      <thead><tr><th>Item</th><th>Status</th><th>Bobot</th><th class="hide-sm">Catatan</th></tr></thead>
+      <tbody>{% for i in items %}
+        <tr><td>{{ i.desc }}{% if i.critical %} <span class="badge b-neutral" title="Item wajib">wajib</span>{% endif %}
+              {% for e in i.evidence_ids %}<span class="chip">{{ e }}</span>{% endfor %}</td>
+            <td><span class="badge b-{{ ITEM_STATUS[i.status][1] }}">{{ ITEM_STATUS[i.status][0] }}</span></td>
+            <td>{{ i.weight }}</td><td class="small muted hide-sm">{{ i.note }}</td></tr>{% endfor %}</tbody>
+    </table>
+    <div class="small muted" style="margin-top:10px">Bobot dan ambang (kuat ≥ 75, sedang 50–74) adalah <b>ASUMSI</b> awal yang perlu dikalibrasi dengan kasus nyata.</div>
+  </div>
+  {% endif %}
+
+  {% if res.evidence %}
+  <div class="card">
+    <h2>Bukti yang ditemukan</h2>
+    <table>
+      <thead><tr><th>Bukti</th><th>Status</th><th class="hide-sm">Sumber / keterangan</th></tr></thead>
+      <tbody>{% for e in res.evidence %}
+        <tr><td><b>{{ EV_TYPE[e.type] }}</b> <span class="chip">{{ e.evidence_id }}</span>
+              {% if e.file_uri %}<div class="mono muted">{{ e.file_uri }}</div>{% endif %}</td>
+            <td><span class="badge b-{{ EV_STATUS[e.status][1] }}">{{ EV_STATUS[e.status][0] }}</span></td>
+            <td class="small muted hide-sm">
+              {% if e.source == 'LOCAL_FOLDER' %}Folder lokal{% else %}Seller Center{% endif %}
+              {% if e.captured_at %} · direkam {{ e.captured_at|fmt_ts }}{% endif %}
+              {% if e.type in ['PACKING_VIDEO','RETURN_RECEIPT_VIDEO'] and e.status == 'COLLECTED' %}
+                <div>{% if e.seller_attestations %}Pernyataan penjual atas isi video: ada{% else %}Isi video belum dinyatakan penjual (isi video tidak dibaca sistem){% endif %}</div>{% endif %}
+              {% if e.status == 'FAILED' %}<div>Dapat dicoba ulang.</div>{% endif %}
+              {% if e.status == 'NEEDS_CONFIRMATION' %}<div>Beberapa kandidat: {{ e.extracted.candidates|join(', ') }}</div>{% endif %}</td></tr>{% endfor %}</tbody>
+    </table>
+    <div class="small muted" style="margin-top:10px">Berkas asli tidak pernah diubah; sistem hanya mencatat hash (SHA-256) dan metadata.</div>
+  </div>
+  {% endif %}
+
+  {% if video_items and st.state != 'FILED' %}
+  <div class="card">
+    <h2>Pernyataan penjual atas isi video</h2>
+    <p class="muted small" style="margin-top:0">Sistem <b>tidak menonton video</b>. Klaim tentang isinya hanya boleh muncul di draf kalau <b>kamu sendiri</b> menyatakannya di sini, dan ditulis sebagai “Penjual menyatakan…”. Centang hanya yang memang benar.</p>
+    <form method="post" action="{{ url_for('console.attest', cid=r.id) }}">
+      {% for eid, its in video_items.items() %}
+      <div style="margin-bottom:10px"><b>{{ EV_TYPE[(res.evidence|selectattr('evidence_id','equalto',eid)|first).type] }}</b> <span class="chip">{{ eid }}</span>
+        {% for it in its %}<label class="ck" style="margin:6px 0 0"><input type="checkbox" name="att" value="{{ eid }}:{{ it.item_id }}" {% if it.checked %}checked{% endif %}>
+          <span>Saya menyatakan video ini memperlihatkan: <b>{{ it.desc|lower }}</b></span></label>{% endfor %}</div>
+      {% endfor %}
+      <button class="btn">Simpan pernyataan &amp; analisis ulang</button>
+      <span class="small muted" style="margin-left:8px">Draf yang sudah ada akan diganti, dan persetujuan harus diberikan lagi.</span>
+    </form>
+  </div>
+  {% endif %}
+
+  {% for e in res.evidence if e.status == 'NEEDS_CONFIRMATION' and st.state != 'FILED' %}
+  <div class="card">
+    <h2>Pilih berkas yang dipakai: {{ EV_TYPE[e.type] }}</h2>
+    <p class="muted small" style="margin-top:0">Ada lebih dari satu kandidat untuk pesanan ini. Sistem tidak menebak. Yang tidak dipilih dipindah ke folder <span class="mono">_tidak_dipakai</span>, tidak dihapus.</p>
+    <form method="post" action="{{ url_for('console.choose', cid=r.id) }}">
+      <input type="hidden" name="evidence_id" value="{{ e.evidence_id }}">
+      {% for n in e.extracted.candidates %}<label class="ck" style="margin:4px 0"><input type="radio" name="keep" value="{{ n }}" required> <span class="mono">{{ n }}</span></label>{% endfor %}
+      <button class="btn" style="margin-top:8px">Pakai berkas ini</button>
+    </form>
+  </div>
+  {% endfor %}
+
+  {% if upload_roles and st.state != 'FILED' %}
+  <div class="card">
+    <h2>Tambah bukti</h2>
+    <div class="note" style="margin-bottom:10px">Berkas yang kamu tambahkan di sini <b>disimpan di komputermu</b> dan dipakai sistem untuk menilai. Berkas baru <b>dikirim ke marketplace hanya setelah kamu menyetujui banding</b>. Di rancangan akhir langkah ini tidak ada: robot mengambil bukti dari foldermu.</div>
+    <p class="muted small" style="margin-top:0">Hanya bukti <b>asli milikmu</b> yang sudah ada. Jangan mengunggah rekaman ulang atau berkas yang diedit. Isi form dengan waktu rekam sebenarnya (lihat di HP-mu); sistem membandingkannya dengan waktu barang diserahkan ke kurir.</p>
+    <form method="post" action="{{ url_for('console.upload', cid=r.id) }}" enctype="multipart/form-data" style="display:grid;gap:10px;max-width:520px">
+      <label class="small">Jenis bukti<br><select name="role" required style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px">
+        {% for v,l in upload_roles %}<option value="{{ v }}">{{ l }}</option>{% endfor %}</select></label>
+      <label class="small">Berkas (mp4, jpg, png, pdf; maks. 50 MB)<br><input type="file" name="file" required></label>
+      <label class="small">Waktu direkam (WIB)<br><input type="datetime-local" name="captured_at" style="font:inherit;padding:6px;border:1px solid var(--line);border-radius:8px"></label>
+      <div><button class="btn primary">Unggah &amp; analisis ulang</button></div>
+    </form>
+  </div>
+  {% endif %}
+
+  {% if st.state == 'PENDING_APPROVAL' and st.req %}
+  {% set ap = st.req.appeal %}
+  <div class="card draft">
+    <h2>Draf banding</h2>
+    <div class="small muted" style="margin-bottom:6px">Setiap kalimat merujuk ke bukti yang terkumpul. Tidak ada klaim tanpa bukti.</div>
+    <h3>Ringkasan</h3>
+    <ul>{% for c in ap.summary %}<li>{{ c.text }}{% for e in c.evidence_ids %}<span class="chip">{{ e }}</span>{% endfor %}</li>{% endfor %}</ul>
+    <h3>Kronologi</h3>
+    <ul class="tl">{% for t in ap.timeline %}<li><b>{{ t.ts|fmt_ts }}</b> · {{ t.event }}{% for e in t.evidence_ids %}<span class="chip">{{ e }}</span>{% endfor %}</li>{% endfor %}</ul>
+    <h3>Permintaan</h3>
+    <ul>{% for q in ap.requests %}<li>{{ q.text }}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+  {% endif %}
+</div>
+
+<aside class="side">
+  <div class="card">
+    <h2>Keputusan</h2>
+    {% if not st %}
+      <div class="note">Analisis dulu untuk mendapat saran.</div>
+    {% elif st.state == 'PENDING_APPROVAL' %}
+      <p style="margin-top:0">Draf siap. <b>Tidak ada yang dikirim sebelum kamu setuju.</b></p>
+      {% for f in res.flags %}<div class="flag" style="font-size:13px"><b>Cek dulu:</b> {{ f.note }}</div>{% endfor %}
+      <form method="post" action="{{ url_for('console.approve', cid=r.id) }}">
+        <input type="hidden" name="hash" value="{{ st.req.draft_hash }}">
+        <label class="ck"><input type="checkbox" id="ck" onchange="document.getElementById('go').disabled=!this.checked">
+          <span>Saya sudah membaca draf dan bukti, dan menyetujui pengajuan banding ini.</span></label>
+        <button id="go" class="btn primary" style="width:100%" disabled>Setujui &amp; ajukan banding</button>
+      </form>
+      <form method="post" action="{{ url_for('console.reject', cid=r.id) }}" style="margin-top:8px">
+        <button class="btn danger" style="width:100%">Tolak draf</button></form>
+      <hr class="hr">
+      <details><summary>Tambah catatan permintaan</summary>
+        <form method="post" action="{{ url_for('console.note', cid=r.id) }}" style="margin-top:8px">
+          <textarea name="note" placeholder="Mis. Mohon dikonfirmasi bila ada bukti tambahan yang diperlukan."></textarea>
+          <div class="small muted" style="margin:6px 0">Draf akan diperiksa ulang, hash berubah, dan persetujuan harus diberikan lagi.</div>
+          <button class="btn sm">Tambahkan</button></form></details>
+      <div class="small muted mono" style="margin-top:12px">hash draf: {{ st.req.draft_hash[:16] }}…</div>
+      <div class="note" style="margin-top:10px">Hasil banding tidak dapat dipastikan, sekuat apa pun buktinya.</div>
+    {% elif st.state == 'FILED' %}
+      <p style="margin-top:0"><span class="badge b-ok">Sudah diajukan</span></p>
+      <dl class="kv" style="grid-template-columns:90px 1fr">
+        <dt>Nomor</dt><dd class="mono">{{ st.filing.submission_ref }}</dd>
+        <dt>Waktu</dt><dd>{{ st.filing.filed_at|fmt_ts }}</dd>
+        <dt>Hasil</dt><dd>{% if st.outcome %}{{ 'Dimenangkan' if st.outcome=='RESOLVED_WON' else 'Ditolak' }} <span class="badge b-neutral">ILUSTRASI</span>
+          {% else %}Menunggu keputusan (simulasi). <a href="">Muat ulang</a>{% endif %}</dd></dl>
+      <div class="small muted" style="margin-top:8px">Hasil di mock adalah skenario demo (bukti kuat = menang), bukan penilaian atau prediksi.</div>
+    {% else %}
+      <p style="margin-top:0"><span class="badge b-{{ r.tone }}">{{ r.label }}</span></p>
+      <p>{% if st.state == 'AWAITING_MORE_EVIDENCE' %}Ada bukti penting yang belum ada, tetapi masih mungkin kamu lengkapi.{% else %}{{ res.reason|capitalize }}{% endif %}</p>
+      {% if NEXT_STEP[st.state] %}<div class="note"><b>Langkah berikutnya:</b> {{ NEXT_STEP[st.state] }}</div>{% endif %}
+      {% if res.missing %}<h3 style="margin-top:14px">Bukti yang bisa dicari</h3><ul class="small" style="padding-left:18px;margin:0">
+        {% for m in res.missing %}<li><b>{{ item_desc.get(m.item_id, m.item_id) }}</b><br>{{ m.suggestion }}</li>{% endfor %}</ul>{% endif %}
+      <form method="post" action="{{ url_for('console.do_process', cid=r.id) }}" style="margin-top:12px"><button class="btn">Analisis ulang</button></form>
+    {% endif %}
+  </div>
+
+  {% if st and st.audit %}
+  <div class="card"><details><summary>Jejak audit</summary>
+    <div class="audit" style="margin-top:8px">{% for a in st.audit %}<div><span class="mono">{{ a.ts[11:19] }}</span> · {{ a.event }}{% if a.decision %} ({{ a.decision }}){% endif %}{% if a.reason %}: {{ a.reason }}{% endif %}</div>{% endfor %}</div>
+  </details></div>
+  {% endif %}
+</aside>
+</div>
+{% endblock %}

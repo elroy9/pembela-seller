@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h2>Masuk</h2>
+  {% if error %}<div class="err" {{ tid('login-error') }}>{{ error }}</div>{% endif %}
+  <form method="post" {{ eid('login-form') }}>
+    <div class="form-col{% if rev %} rev{% endif %}">
+      <label for="{{ rid('login-username') }}">Username</label>
+      <input type="text" name="username" {{ eid('login-username') }} {{ tid('login-username') }} autocomplete="off">
+      <label for="{{ rid('login-password') }}">Password</label>
+      <input type="password" name="password" {{ eid('login-password') }} {{ tid('login-password') }} autocomplete="off">
+    </div>
+    <button type="submit" {{ tid('login-submit') }}>Masuk</button>
+  </form>
+</div>
+{% endblock %}
